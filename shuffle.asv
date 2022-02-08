@@ -1,0 +1,5 @@
+function checkcorr
+
+nn = 63;
+for ii=1:1000
+     temp(ii) = corr(sig(:,ii),vel');

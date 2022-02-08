@@ -1,0 +1,22 @@
+m=dir('*&*.signals')
+
+for ii=1:numel(m)
+    fname = m(ii).name;
+    load(fname,'sig','-mat');
+    ncell=size(sig,2);
+    sigs = nan(size(sig));
+    sigsp = nan(size(sig));
+    tic
+    for ii=1:ncell
+        try
+            [sigs(:,ii),sigsp(:,ii)]=deconvolveCa(sig(:,ii));
+        catch
+            fprintf('cell %d did not process\n',ii);
+        end
+        if mod(ii,50)==10
+            fprintf('deConvolveCa %d out of %d cells in %d secs\n',ii,ncell,round(toc))
+        end
+    end
+    fprintf('Done deConvolveCa, took %d secs\n',round(toc))
+    save(fname,'sigsp','-append');
+end
